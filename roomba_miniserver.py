@@ -65,7 +65,7 @@ s.listen(10);
 
 while True:
     conn, addr = s.accept();
-    data = conn.recv(1024);
+    data = conn.recv(64);
     conn.close();
     message = data.decode('ascii').rstrip();
     #print(message);
