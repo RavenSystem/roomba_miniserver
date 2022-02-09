@@ -13,7 +13,7 @@ roomba_pass = '';
 roomba_pmap = '';
 
 roomba_jobs = {
-    'bedroom': [ 9, 11],
+    'bedroom': [ 9, 11 ],
     'bath': [ 3 ],
 }
 
