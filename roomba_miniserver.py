@@ -36,7 +36,9 @@ def on_message_callback(client, userdata, message):
 
 client = mqtt.Client(client_id = roomba_blid, clean_session = True, protocol = mqtt.MQTTv311);
 
-context = ssl.SSLContext();
+context = ssl.SSLContext(protocol = ssl.PROTOCOL_TLS_CLIENT);
+context.check_hostname = False;
+context.verify_mode = ssl.CERT_NONE;
 context.set_ciphers('HIGH:!DH:!aNULL');
 #context.set_ciphers('DEFAULT@SECLEVEL=1');
 client.tls_set_context(context);
