@@ -34,6 +34,8 @@ def on_message_callback(client, userdata, message):
     print("* RETAIN FLAGS = ", message.retain);
     print("");
 
+print("Roomba MiniServer (c) 2022 Jose A. Jimenez Campos");
+
 client = mqtt.Client(client_id = roomba_blid, clean_session = True, protocol = mqtt.MQTTv311);
 
 context = ssl.SSLContext(protocol = ssl.PROTOCOL_TLS_CLIENT);
@@ -46,9 +48,11 @@ client.tls_insecure_set(True);
 client.username_pw_set(roomba_blid, roomba_pass);
 
 if (len(sys.argv) > 1 and str(sys.argv[1]) == 'info'):
+    print("Retrieving INFO");
     try:
         client.connect(roomba_host, port = roomba_port);
     except:
+        print("! Connect to Roomba");
         exit(-1);
         
     client.on_message = on_message_callback;
@@ -59,7 +63,7 @@ if (len(sys.argv) > 1 and str(sys.argv[1]) == 'info'):
     client.disconnect();
     exit(0);
 
-
+print("Server mode");
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
 miniserver_host = socket.gethostname();
 s.bind((miniserver_host, miniserver_port));
@@ -70,7 +74,7 @@ while True:
     data = conn.recv(64);
     conn.close();
     message = data.decode('ascii').rstrip();
-    #print(message);
+    print("Recv: " + message);
     
     if (message.startswith(roomba_prefix)):
         roomba_message = message.replace(roomba_prefix, '');
@@ -79,9 +83,10 @@ while True:
         
         try:
             client.connect(roomba_host, port = roomba_port);
-            client.publish('cmd', '{"command": "stop", "time": 0, "initiator": "localApp"}');
+            client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
             time.sleep(15);
         except:
+            print("! Connect to Roomba");
             continue;
             
         if (jobs != ''):
@@ -90,9 +95,9 @@ while True:
             for job in jobs:
                 jobs_json_array += '{"region_id":"' + str(job) + '","type":"rid"},'
             
-            client.publish('cmd', '{"command":"start","regions":[' + jobs_json_array[:-1] + '],"ordered":1,"pmap_id": "' + roomba_pmap + '","time":0,"initiator":"localApp"}');
+            client.publish('cmd', '{"command":"start","regions":[' + jobs_json_array[:-1] + '],"ordered":1,"pmap_id":"' + roomba_pmap + '","time":0,"initiator":"localApp"}');
         
         else:
-            client.publish('cmd', '{"command": "' + roomba_message + '", "time": 0, "initiator": "localApp"}');
+            client.publish('cmd', '{"command":"' + roomba_message + '","time":0,"initiator": "localApp"}');
 
         client.disconnect();
