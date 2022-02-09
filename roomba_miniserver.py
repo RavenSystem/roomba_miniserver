@@ -80,7 +80,7 @@ while True:
         try:
             client.connect(roomba_host, port = roomba_port);
             client.publish('cmd', '{"command": "stop", "time": 0, "initiator": "localApp"}');
-            time.sleep(3);
+            time.sleep(15);
         except:
             continue;
             
