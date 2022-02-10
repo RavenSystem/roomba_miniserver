@@ -80,16 +80,16 @@ while True:
     if (message.startswith(roomba_prefix)):
         roomba_message = message.replace(roomba_prefix, '');
         
-        jobs = roomba_jobs.get(roomba_message, '');
-        
         try:
             client.connect(roomba_host, port = roomba_port);
-            client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
-            time.sleep(12);
         except:
             print("! Connect to Roomba");
             continue;
             
+        client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
+        time.sleep(12);
+        
+        jobs = roomba_jobs.get(roomba_message, '');    
         if (jobs != ''):
             jobs_json_array = '';
             
