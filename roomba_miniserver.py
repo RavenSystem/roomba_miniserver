@@ -86,11 +86,11 @@ while True:
             print("! Connect to Roomba");
             continue;
         
-        if (roomba_message != 'pause' and roomba_message != 'resume'):
+        jobs = roomba_jobs.get(roomba_message, '');
+        if (jobs != '' or roomba_message == 'start' or roomba_message == 'dock'):
             client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
             time.sleep(20);
         
-        jobs = roomba_jobs.get(roomba_message, '');    
         if (jobs != ''):
             jobs_json_array = '';
             
