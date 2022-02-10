@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Roomba Mini Server
-# (C) 2022 Jose Antoinio Jimenez Campos
+# (C) 2022 Jose Antonio Jimenez Campos
 
 # Requirements:
 # python3 -m pip install paho-mqtt
