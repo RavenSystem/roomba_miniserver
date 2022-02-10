@@ -100,6 +100,6 @@ while True:
             client.publish('cmd', '{"command":"start","regions":[' + jobs_json_array[:-1] + '],"ordered":1,"pmap_id":"' + roomba_pmap + '","time":0,"initiator":"localApp"}');
         
         else:
-            client.publish('cmd', '{"command":"' + roomba_message + '","time":0,"initiator": "localApp"}');
+            client.publish('cmd', '{"command":"' + roomba_message + '","time":0,"initiator":"localApp"}');
 
         client.disconnect();
