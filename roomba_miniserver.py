@@ -85,9 +85,10 @@ while True:
         except:
             print("! Connect to Roomba");
             continue;
-            
-        client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
-        time.sleep(20);
+        
+        if (roomba_message != 'pause' and roomba_message != 'resume'):
+            client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
+            time.sleep(20);
         
         jobs = roomba_jobs.get(roomba_message, '');    
         if (jobs != ''):
