@@ -87,7 +87,7 @@ while True:
             continue;
             
         client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
-        time.sleep(12);
+        time.sleep(20);
         
         jobs = roomba_jobs.get(roomba_message, '');    
         if (jobs != ''):
