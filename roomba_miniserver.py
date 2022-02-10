@@ -64,6 +64,7 @@ if (len(sys.argv) > 1 and str(sys.argv[1]) == 'info'):
     exit(0);
 
 print("Server mode");
+time.sleep(30);
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
 miniserver_host = socket.gethostname();
 s.bind((miniserver_host, miniserver_port));
@@ -84,7 +85,7 @@ while True:
         try:
             client.connect(roomba_host, port = roomba_port);
             client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
-            time.sleep(15);
+            time.sleep(12);
         except:
             print("! Connect to Roomba");
             continue;
