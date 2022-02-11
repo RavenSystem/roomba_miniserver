@@ -24,6 +24,7 @@ roomba_prefix = 'roomba_';
 import sys
 import socket;
 import ssl;
+import datetime;
 import time;
 import paho.mqtt.client as mqtt;
 
@@ -63,8 +64,12 @@ if (len(sys.argv) > 1 and str(sys.argv[1]) == 'info'):
     client.disconnect();
     exit(0);
 
+def roomba_time():
+    rt = datetime.datetime.now() - datetime.datetime(1970, 1, 1);
+    return str(int(rt.total_seconds()));
+    
 print("Server mode");
-common_string = ',"time":0,"initiator":"localApp","robot_id":"' + roomba_blid + '"}';
+common_string = '","initiator":"localApp","robot_id":"' + roomba_blid + '","time":';
 
 time.sleep(30);
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -90,7 +95,7 @@ while True:
         
         jobs = roomba_jobs.get(roomba_message, '');
         if (jobs != '' or roomba_message == 'start' or roomba_message == 'dock'):
-            client.publish('cmd', '{"command":"stop"' + common_string);
+            client.publish('cmd', '{"command":"stop' + common_string + roomba_time() + '}');
             time.sleep(20);
         
         if (jobs != ''):
@@ -99,9 +104,9 @@ while True:
             for job in jobs:
                 jobs_json_array += '{"region_id":"' + str(job) + '","type":"rid"},'
             
-            client.publish('cmd', '{"command":"start","regions":[' + jobs_json_array[:-1] + '],"ordered":1,"pmap_id":"' + roomba_pmap + '"' + common_string);
+            client.publish('cmd', '{"command":"start","regions":[' + jobs_json_array[:-1] + '],"ordered":1,"pmap_id":"' + roomba_pmap + common_string + roomba_time() + '}');
         
         else:
-            client.publish('cmd', '{"command":"' + roomba_message + '"' + common_string);
+            client.publish('cmd', '{"command":"' + roomba_message + common_string + roomba_time() + '}');
 
         client.disconnect();
