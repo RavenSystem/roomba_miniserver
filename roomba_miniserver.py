@@ -64,6 +64,8 @@ if (len(sys.argv) > 1 and str(sys.argv[1]) == 'info'):
     exit(0);
 
 print("Server mode");
+common_string = ',"time":0,"initiator":"localApp","robot_id":"' + roomba_blid + '"}';
+
 time.sleep(30);
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
 miniserver_host = socket.gethostname();
@@ -88,7 +90,7 @@ while True:
         
         jobs = roomba_jobs.get(roomba_message, '');
         if (jobs != '' or roomba_message == 'start' or roomba_message == 'dock'):
-            client.publish('cmd', '{"command":"stop","time":0,"initiator":"localApp"}');
+            client.publish('cmd', '{"command":"stop"' + common_string);
             time.sleep(20);
         
         if (jobs != ''):
@@ -97,9 +99,9 @@ while True:
             for job in jobs:
                 jobs_json_array += '{"region_id":"' + str(job) + '","type":"rid"},'
             
-            client.publish('cmd', '{"command":"start","regions":[' + jobs_json_array[:-1] + '],"ordered":1,"pmap_id":"' + roomba_pmap + '","time":0,"initiator":"localApp"}');
+            client.publish('cmd', '{"command":"start","regions":[' + jobs_json_array[:-1] + '],"ordered":1,"pmap_id":"' + roomba_pmap + '"' + common_string);
         
         else:
-            client.publish('cmd', '{"command":"' + roomba_message + '","time":0,"initiator":"localApp"}');
+            client.publish('cmd', '{"command":"' + roomba_message + '"' + common_string);
 
         client.disconnect();
