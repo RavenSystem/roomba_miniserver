@@ -107,6 +107,10 @@ while True:
             client.publish('cmd', '{"command":"start","regions":[' + jobs_json_array[:-1] + '],"ordered":1,"pmap_id":"' + roomba_pmap + common_string + roomba_time() + '}');
         
         else:
-            client.publish('cmd', '{"command":"' + roomba_message + common_string + roomba_time() + '}');
+            select_all_message = ''
+            if (roomba_message == 'start'):
+                select_all_message = ',"select_all":true';
+            
+            client.publish('cmd', '{"command":"' + roomba_message + common_string + roomba_time() + select_all_message + '}');
 
         client.disconnect();
